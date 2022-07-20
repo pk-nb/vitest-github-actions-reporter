@@ -22,6 +22,7 @@ const stackIgnorePatterns = [
 const slash = (str: string) => str.replace(/\\/g, '/')
 
 export const parseStacktrace = (stackStr: string): ParsedStack[] => {
+  console.log('stackStr', stackStr)
   const stackFrames = stackStr.split('\n').flatMap((raw): ParsedStack[] => {
     const line = raw.trim()
     const match = line.match(stackFnCallRE) || line.match(stackBarePathRE)
@@ -34,6 +35,15 @@ export const parseStacktrace = (stackStr: string): ParsedStack[] => {
     }
 
     if (stackIgnorePatterns.some(p => file.includes(p))) return []
+
+    console.log(
+      'raw',
+      raw,
+      'line',
+      parseInt(match[3]!),
+      'column',
+      parseInt(match[4]!)
+    )
 
     return [
       {
